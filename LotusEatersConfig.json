@@ -7,7 +7,7 @@
   "sourceUrl": "TODO: replace with the hosted URL of this config file",
   "repositoryUrl": "TODO: replace with the plugin repository URL",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 4,
+  "version": 5,
   "iconUrl": "./LotusEatersIcon.png",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -26,12 +26,9 @@
   ],
   "authentication": {
     "loginUrl": "https://www.lotuseaters.com/login",
+    "completionUrl": "https://www.lotuseaters.com/",
     "userAgent": "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36",
-    "domainHeadersToFind": {
-      "www.lotuseaters.com": [
-        "laravel_session"
-      ]
-    }
+    "cookiesToFind": ["laravel_session"]
   },
   "settings": [
     {
@@ -86,6 +83,9 @@
     ],
     "4": [
       "Fix premium auth — capture laravel_session cookie specifically so Grayjay waits until post-login"
+    ],
+    "5": [
+      "Fix auth using cookiesToFind and completionUrl per Grayjay auth docs"
     ]
   }
 }
