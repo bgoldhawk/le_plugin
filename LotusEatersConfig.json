@@ -7,7 +7,7 @@
   "sourceUrl": "TODO: replace with the hosted URL of this config file",
   "repositoryUrl": "TODO: replace with the plugin repository URL",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 2,
+  "version": 3,
   "iconUrl": "./LotusEatersIcon.png",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -80,6 +80,9 @@
     ],
     "2": [
       "Fix premium video playback — session cookies now sent with all requests"
+    ],
+    "3": [
+      "Fix all videos broken — auth now only applied to content detail requests"
     ]
   }
 }
