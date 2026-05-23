@@ -7,7 +7,7 @@
   "sourceUrl": "TODO: replace with the hosted URL of this config file",
   "repositoryUrl": "TODO: replace with the plugin repository URL",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 4,
+  "version": 3,
   "iconUrl": "./LotusEatersIcon.png",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -29,7 +29,7 @@
     "userAgent": "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36",
     "domainHeadersToFind": {
       "www.lotuseaters.com": [
-        "laravel_session"
+        "Cookie"
       ]
     }
   },
@@ -83,9 +83,6 @@
     ],
     "3": [
       "Fix all videos broken — auth now only applied to content detail requests"
-    ],
-    "4": [
-      "Fix auth capture — target laravel_session cookie specifically instead of generic Cookie header"
     ]
   }
 }
