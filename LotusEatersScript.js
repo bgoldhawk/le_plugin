@@ -203,7 +203,7 @@ source.getContentDetails = function (url) {
     url: url,
     shareUrl: url,
     datetime: publishDate,
-    description: post.introExcerpt ?? post.excerpt ?? '',
+    description: post.introExcerpt || post.excerpt || '',
     author: primaryAuthor
       ? new PlatformAuthorLink(
           new PlatformID(PLATFORM, primaryAuthor.entryId, _config.id, PLATFORM_CLAIMTYPE),
