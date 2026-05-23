@@ -6,6 +6,7 @@ const PLATFORM_CLAIMTYPE = 31;
 const BASE_URL = 'https://www.lotuseaters.com';
 const API_BASE = 'https://www.lotuseaters.com/api';
 const RUMBLE_EMBED_JS = 'https://rumble.com/embedJS/u6xvg1.{videoId}/?request=video&ver=2';
+const DEFAULT_THUMBNAIL = 'https://www.lotuseaters.com/build/assets/logo-B_C8eAls.svg';
 
 // Inertia.js SPA headers required for JSON responses
 const INERTIA_HEADERS = {
@@ -46,7 +47,7 @@ source.getHome = function () {
 
   if (!latestBlock?.entryId) {
     // Fallback to search if listing structure changes
-    return new LotusEatersSearchPager(`${API_BASE}/search?q=`);
+    return new LotusEatersSearchPager(`${API_BASE}/search?search=`);
   }
 
   return new LotusEatersListingPager(`${API_BASE}/listing/${latestBlock.entryId}/posts`, 1);
@@ -61,7 +62,7 @@ source.getSearchCapabilities = function () {
 };
 
 source.search = function (query) {
-  return new LotusEatersSearchPager(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+  return new LotusEatersSearchPager(`${API_BASE}/search?search=${encodeURIComponent(query)}`);
 };
 
 source.getSearchChannelContentsCapabilities = function () {
@@ -267,14 +268,14 @@ function categoryAuthorLink(category) {
       new PlatformID(PLATFORM, category.entryId, _config.id, PLATFORM_CLAIMTYPE),
       category.name ?? '',
       `${BASE_URL}/category/${category.slug}`,
-      imageUrl(category.image?.file?.url) ?? '',
+      imageUrl(category.image?.file?.url) ?? DEFAULT_THUMBNAIL,
     );
   }
   return new PlatformAuthorLink(
     new PlatformID(PLATFORM, 'lotuseaters', _config.id, PLATFORM_CLAIMTYPE),
     'Lotus Eaters',
     BASE_URL,
-    '',
+    DEFAULT_THUMBNAIL,
   );
 }
 
