@@ -160,9 +160,12 @@ source.getContentDetails = function (url) {
     }));
   }
 
-  const primaryAuthor = post.authors?.[0];
   const thumbnail = imageUrl(post.thumbnailImage?.file?.url ?? post.image?.file?.url);
   const publishDate = post.publishDate ? Math.floor(new Date(post.publishDate).getTime() / 1000) : 0;
+
+  const authorNames = (post.authors ?? []).map(a => a.fullName).filter(Boolean).join(', ');
+  const baseDescription = post.introExcerpt || post.excerpt || '';
+  const description = authorNames ? `By: ${authorNames}\n\n${baseDescription}` : baseDescription;
 
   return new PlatformVideoDetails({
     id: new PlatformID(PLATFORM, post.entryId, _config.id, PLATFORM_CLAIMTYPE),
@@ -170,20 +173,8 @@ source.getContentDetails = function (url) {
     url: url,
     shareUrl: url,
     datetime: publishDate,
-    description: post.introExcerpt || post.excerpt || '',
-    author: primaryAuthor
-      ? new PlatformAuthorLink(
-          new PlatformID(PLATFORM, primaryAuthor.entryId, _config.id, PLATFORM_CLAIMTYPE),
-          primaryAuthor.fullName ?? '',
-          `${BASE_URL}/author/${primaryAuthor.slug}`,
-          imageUrl(primaryAuthor.profilePicture?.file?.url) ?? '',
-        )
-      : new PlatformAuthorLink(
-          new PlatformID(PLATFORM, 'lotuseaters', _config.id, PLATFORM_CLAIMTYPE),
-          'Lotus Eaters',
-          BASE_URL,
-          '',
-        ),
+    description: description,
+    author: categoryAuthorLink(post.category),
     thumbnails: thumbnail ? new Thumbnails([new Thumbnail(thumbnail, 0)]) : new Thumbnails([]),
     video: new VideoSourceDescriptor(sources),
     viewCount: post.viewCount ?? 0,
@@ -253,7 +244,6 @@ function fetchJsonPage(url) {
 }
 
 function postToplatformVideo(post) {
-  const primaryAuthor = post.authors?.[0];
   const thumbnail = imageUrl(post.thumbnailImage?.file?.url ?? post.image?.file?.url);
   const publishDate = post.publishDate ? Math.floor(new Date(post.publishDate).getTime() / 1000) : 0;
 
@@ -263,24 +253,29 @@ function postToplatformVideo(post) {
     url: `${BASE_URL}/${post.slug}`,
     shareUrl: `${BASE_URL}/${post.slug}`,
     datetime: publishDate,
-    author: primaryAuthor
-      ? new PlatformAuthorLink(
-          new PlatformID(PLATFORM, primaryAuthor.entryId, _config.id, PLATFORM_CLAIMTYPE),
-          primaryAuthor.fullName ?? '',
-          `${BASE_URL}/author/${primaryAuthor.slug}`,
-          imageUrl(primaryAuthor.profilePicture?.file?.url) ?? '',
-        )
-      : new PlatformAuthorLink(
-          new PlatformID(PLATFORM, 'lotuseaters', _config.id, PLATFORM_CLAIMTYPE),
-          'Lotus Eaters',
-          BASE_URL,
-          '',
-        ),
+    author: categoryAuthorLink(post.category),
     thumbnails: thumbnail ? new Thumbnails([new Thumbnail(thumbnail, 0)]) : new Thumbnails([]),
     viewCount: post.viewCount ?? 0,
     isLive: false,
     duration: 0,
   });
+}
+
+function categoryAuthorLink(category) {
+  if (category?.entryId) {
+    return new PlatformAuthorLink(
+      new PlatformID(PLATFORM, category.entryId, _config.id, PLATFORM_CLAIMTYPE),
+      category.name ?? '',
+      `${BASE_URL}/category/${category.slug}`,
+      imageUrl(category.image?.file?.url) ?? '',
+    );
+  }
+  return new PlatformAuthorLink(
+    new PlatformID(PLATFORM, 'lotuseaters', _config.id, PLATFORM_CLAIMTYPE),
+    'Lotus Eaters',
+    BASE_URL,
+    '',
+  );
 }
 
 function getRumbleHLS(videoId) {

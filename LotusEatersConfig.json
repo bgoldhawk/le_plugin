@@ -7,7 +7,7 @@
   "sourceUrl": "https://raw.githubusercontent.com/bgoldhawk/le_plugin/main/LotusEatersConfig.json",
   "repositoryUrl": "https://github.com/bgoldhawk/le_plugin",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 7,
+  "version": 8,
   "iconUrl": "./LotusEatersIcon.png",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -92,6 +92,9 @@
     ],
     "7": [
       "Channels are now categories instead of authors"
+    ],
+    "8": [
+      "Category shown as creator on videos, human authors moved to description"
     ]
   }
 }
