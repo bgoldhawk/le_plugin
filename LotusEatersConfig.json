@@ -1,0 +1,82 @@
+{
+  "name": "Podcast of the Lotus Eaters",
+  "description": "Podcast of the Lotus Eaters - news, politics, and culture.",
+  "author": "FUTO",
+  "authorUrl": "https://futo.tech",
+  "platformUrl": "https://www.lotuseaters.com/",
+  "sourceUrl": "TODO: replace with the hosted URL of this config file",
+  "repositoryUrl": "TODO: replace with the plugin repository URL",
+  "scriptUrl": "./LotusEatersScript.js",
+  "version": 1,
+  "iconUrl": "./LotusEatersIcon.png",
+  "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
+  "scriptSignature": "",
+  "scriptPublicKey": "",
+  "packages": [
+    "Http"
+  ],
+  "allowEval": false,
+  "allowUrls": [
+    "www.lotuseaters.com",
+    "lotuseaters.com",
+    "rumble.com",
+    "cdn.rumble.cloud",
+    "hugh.cdn.rumble.cloud",
+    "images.ctfassets.net"
+  ],
+  "authentication": {
+    "loginUrl": "https://www.lotuseaters.com/login",
+    "userAgent": "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36",
+    "domainHeadersToFind": {
+      "www.lotuseaters.com": [
+        "Cookie"
+      ]
+    }
+  },
+  "settings": [
+    {
+      "variable": "contentHeader",
+      "name": "Content",
+      "description": "What content is shown and how it is classified.",
+      "type": "Header"
+    },
+    {
+      "variable": "showPremiumContent",
+      "name": "Show Premium Content",
+      "description": "Show members-only premium content. Requires login.",
+      "type": "Boolean",
+      "default": "false"
+    },
+    {
+      "variable": "privacyHeader",
+      "name": "Privacy",
+      "description": "What information is sent back to Lotus Eaters.",
+      "type": "Header"
+    },
+    {
+      "variable": "activityTracking",
+      "name": "Provide Activity",
+      "description": "Send playback activity to Lotus Eaters.",
+      "type": "Boolean",
+      "default": "false"
+    },
+    {
+      "variable": "diagnosticsHeader",
+      "name": "Diagnostics",
+      "description": "Logging and troubleshooting.",
+      "type": "Header"
+    },
+    {
+      "variable": "verboseNotifications",
+      "name": "Verbose Notifications",
+      "description": "Show toast notifications for plugin trace messages and failed requests.",
+      "type": "Boolean",
+      "default": "false"
+    }
+  ],
+  "changelog": {
+    "1": [
+      "Initial release"
+    ]
+  }
+}
