@@ -142,7 +142,7 @@ source.isContentDetailsUrl = function (url) {
 };
 
 source.getContentDetails = function (url) {
-  const resp = inertiaGet(url);
+  const resp = inertiaGet(url, true);
   const post = resp.props?.post;
   if (!post) throw new ScriptException('Post not found at: ' + url);
 
@@ -272,7 +272,7 @@ function pageUrl(baseUrl, page) {
 function fetchJsonPage(url) {
   const resp = http.GET(url, {
     'User-Agent': 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36',
-  }, true);
+  }, false);
 
   if (!resp.isOk) {
     throw new ScriptException(`API request failed (${resp.code}): ${url}`);
@@ -375,8 +375,8 @@ function extractTextFromRichText(richText) {
   return text;
 }
 
-function inertiaGet(url) {
-  const resp = http.GET(url, INERTIA_HEADERS, true);
+function inertiaGet(url, useAuth) {
+  const resp = http.GET(url, INERTIA_HEADERS, useAuth === true);
   if (!resp.isOk) throw new ScriptException(`Request failed (${resp.code}): ${url}`);
   try {
     return JSON.parse(resp.body);
