@@ -16,7 +16,6 @@ const INERTIA_HEADERS = {
 };
 
 const REGEX = {
-  AUTHOR_URL: /lotuseaters\.com\/author\/([a-zA-Z0-9_-]+)/,
   CATEGORY_URL: /lotuseaters\.com\/category\/([a-zA-Z0-9_-]+)/,
   POST_URL: /^https?:\/\/(?:www\.)?lotuseaters\.com\/([a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*)(?:\?.*)?$/,
   RUMBLE_EMBED: /rumble\.com\/embed\/([a-zA-Z0-9]+)/,
@@ -74,64 +73,32 @@ source.getSearchChannelContentsCapabilities = function () {
 };
 
 source.isChannelUrl = function (url) {
-  return REGEX.AUTHOR_URL.test(url) || REGEX.CATEGORY_URL.test(url);
+  return REGEX.CATEGORY_URL.test(url);
 };
 
 source.getChannel = function (url) {
-  if (REGEX.AUTHOR_URL.test(url)) {
-    const resp = inertiaGet(url);
-    const author = resp.props?.author;
-    if (!author) throw new ScriptException('Author not found');
+  const resp = inertiaGet(url);
+  const category = resp.props?.category;
+  if (!category) throw new ScriptException('Category not found');
+  const image = resp.props?.categoryImage;
 
-    return new PlatformChannel({
-      id: new PlatformID(PLATFORM, author.entryId, _config.id, PLATFORM_CLAIMTYPE),
-      name: author.fullName ?? '',
-      thumbnail: imageUrl(author.profilePicture?.file?.url) ?? '',
-      banner: '',
-      subscribers: 0,
-      description: author.bio ?? '',
-      url: url,
-    });
-  }
-
-  if (REGEX.CATEGORY_URL.test(url)) {
-    const resp = inertiaGet(url);
-    const category = resp.props?.category;
-    if (!category) throw new ScriptException('Category not found');
-    const image = resp.props?.categoryImage;
-
-    return new PlatformChannel({
-      id: new PlatformID(PLATFORM, category.entryId, _config.id, PLATFORM_CLAIMTYPE),
-      name: category.name ?? '',
-      thumbnail: imageUrl(image?.file?.url) ?? '',
-      banner: '',
-      subscribers: 0,
-      description: '',
-      url: url,
-    });
-  }
-
-  throw new ScriptException('Not a valid channel URL');
+  return new PlatformChannel({
+    id: new PlatformID(PLATFORM, category.entryId, _config.id, PLATFORM_CLAIMTYPE),
+    name: category.name ?? '',
+    thumbnail: imageUrl(image?.file?.url) ?? '',
+    banner: '',
+    subscribers: 0,
+    description: '',
+    url: url,
+  });
 };
 
 source.getChannelContents = function (url) {
-  if (REGEX.AUTHOR_URL.test(url)) {
-    const resp = inertiaGet(url);
-    const author = resp.props?.author;
-    if (!author) throw new ScriptException('Author not found');
-    const apiUrl = `${API_BASE}/posts/referencing/author/${author.entryId}`;
-    return new LotusEatersSearchPager(apiUrl);
-  }
-
-  if (REGEX.CATEGORY_URL.test(url)) {
-    const resp = inertiaGet(url);
-    const category = resp.props?.category;
-    if (!category) throw new ScriptException('Category not found');
-    const apiUrl = `${API_BASE}/posts/referencing/category/${category.entryId}`;
-    return new LotusEatersSearchPager(apiUrl);
-  }
-
-  throw new ScriptException('Not a valid channel URL');
+  const resp = inertiaGet(url);
+  const category = resp.props?.category;
+  if (!category) throw new ScriptException('Category not found');
+  const apiUrl = `${API_BASE}/posts/referencing/category/${category.entryId}`;
+  return new LotusEatersSearchPager(apiUrl);
 };
 
 source.isContentDetailsUrl = function (url) {
