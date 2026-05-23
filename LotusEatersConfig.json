@@ -7,7 +7,7 @@
   "sourceUrl": "https://raw.githubusercontent.com/bgoldhawk/le_plugin/main/LotusEatersConfig.json",
   "repositoryUrl": "https://github.com/bgoldhawk/le_plugin",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 9,
+  "version": 10,
   "iconUrl": "./LotusEatersIcon.svg",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -98,6 +98,9 @@
     ],
     "9": [
       "Fix search using correct query parameter, add default logo for categories without an image"
+    ],
+    "10": [
+      "Add comment section support with replies"
     ]
   }
 }

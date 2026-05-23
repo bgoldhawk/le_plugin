@@ -185,6 +185,77 @@ source.getContentDetails = function (url) {
 };
 
 
+source.getComments = function (url) {
+  const resp = inertiaGet(url, true);
+  const post = resp.props?.post;
+  if (!post?.entryId) return new CommentPager([], false);
+  return new LotusEatersCommentPager(post.entryId, url, 1);
+};
+
+source.getSubComments = function (comment) {
+  const [postEntryId, commentId] = (comment.id ?? '').split(':');
+  if (!postEntryId || !commentId) return new CommentPager([], false);
+  return new LotusEatersCommentPager(postEntryId, comment.contextUrl, 1, commentId);
+};
+
+
+class LotusEatersCommentPager extends CommentPager {
+  constructor(postEntryId, contextUrl, page, parentCommentId) {
+    const data = fetchCommentPage(postEntryId, page, parentCommentId);
+    const items = (data.items ?? []).map(c => toComment(c, postEntryId, contextUrl));
+    super(items, data.hasMore ?? false, { postEntryId, contextUrl, page, parentCommentId });
+  }
+
+  nextPage() {
+    const { postEntryId, contextUrl, parentCommentId } = this.context;
+    const page = this.context.page + 1;
+    const data = fetchCommentPage(postEntryId, page, parentCommentId);
+    this.results = (data.items ?? []).map(c => toComment(c, postEntryId, contextUrl));
+    this.hasMore = data.hasMore ?? false;
+    this.context.page = page;
+    return this;
+  }
+}
+
+function fetchCommentPage(postEntryId, page, parentCommentId) {
+  const base = parentCommentId
+    ? `${API_BASE}/comments/${postEntryId}/${parentCommentId}`
+    : `${API_BASE}/comments/${postEntryId}`;
+  const url = `${base}?page=${page}&sort_by=newest&sort_direction=desc`;
+  const resp = http.GET(url, {
+    'Accept': 'application/json',
+    'User-Agent': 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36',
+  }, true);
+
+  if (!resp.isOk) return { items: [], hasMore: false };
+
+  try {
+    const data = JSON.parse(resp.body);
+    const comments = data.comments ?? {};
+    return { items: comments.items ?? [], hasMore: comments.hasMore ?? false };
+  } catch (e) {
+    return { items: [], hasMore: false };
+  }
+}
+
+function toComment(c, postEntryId, contextUrl) {
+  return new PlatformComment({
+    contextUrl: contextUrl,
+    author: new PlatformAuthorLink(
+      new PlatformID(PLATFORM, String(c.author?.id ?? c.user_id), _config.id),
+      c.author?.name ?? 'Unknown',
+      '',
+      '',
+    ),
+    message: c.message ?? '',
+    rating: new RatingLikesDislikes(c.likes ?? 0, c.dislikes ?? 0),
+    date: c.created_at ? Math.floor(new Date(c.created_at).getTime() / 1000) : 0,
+    replyCount: c.replies ?? 0,
+    id: `${postEntryId}:${c.id}`,
+  });
+}
+
+
 // Pager for search and referencing APIs: returns {currentPage, total, items, hasMore}
 class LotusEatersSearchPager extends VideoPager {
   constructor(baseUrl, page) {
