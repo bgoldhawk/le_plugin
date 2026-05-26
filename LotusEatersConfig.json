@@ -7,7 +7,7 @@
   "sourceUrl": "https://raw.githubusercontent.com/bgoldhawk/le_plugin/main/LotusEatersConfig.json",
   "repositoryUrl": "https://github.com/bgoldhawk/le_plugin",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 14,
+  "version": 15,
   "iconUrl": "./logo.jpg",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -28,7 +28,7 @@
     "loginUrl": "https://www.lotuseaters.com/login",
     "completionUrl": "https://www.lotuseaters.com/",
     "userAgent": "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36",
-    "cookiesToFind": ["laravel_session", "remember_web_"]
+    "cookiesToFind": ["laravel_session"]
   },
   "settings": [
     {
@@ -113,6 +113,9 @@
     ],
     "14": [
       "Re-add cookiesToFind with laravel_session and remember_web_ cookies"
+    ],
+    "15": [
+      "Revert cookiesToFind to laravel_session only"
     ]
   }
 }
