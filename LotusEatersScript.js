@@ -123,7 +123,11 @@ source.getContentDetails = function (url) {
 
   if (!embedUrl) {
     if (post.premiumContent && !post.hasPremiumAccess) {
-      throw new ScriptException('This is premium content. Please log in with a premium account.');
+      const user = resp.props?.user;
+      if (!user) {
+        throw new ScriptException('Session expired. Please re-login via plugin settings.');
+      }
+      throw new ScriptException('This content requires a premium subscription.');
     }
     throw new ScriptException('No playable video found for: ' + url);
   }
