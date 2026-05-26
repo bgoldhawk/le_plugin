@@ -7,7 +7,7 @@
   "sourceUrl": "https://raw.githubusercontent.com/bgoldhawk/le_plugin/main/LotusEatersConfig.json",
   "repositoryUrl": "https://github.com/bgoldhawk/le_plugin",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 11,
+  "version": 12,
   "iconUrl": "./logo.jpg",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -27,8 +27,7 @@
   "authentication": {
     "loginUrl": "https://www.lotuseaters.com/login",
     "completionUrl": "https://www.lotuseaters.com/",
-    "userAgent": "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36",
-    "cookiesToFind": ["laravel_session", "remember_web_*"]
+    "userAgent": "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.230 Mobile Safari/537.36"
   },
   "settings": [
     {
@@ -104,6 +103,9 @@
     ],
     "11": [
       "Distinguish expired session from missing subscription in premium error messages"
+    ],
+    "12": [
+      "Remove cookiesToFind from authentication config"
     ]
   }
 }
