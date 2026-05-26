@@ -7,7 +7,7 @@
   "sourceUrl": "https://raw.githubusercontent.com/bgoldhawk/le_plugin/main/LotusEatersConfig.json",
   "repositoryUrl": "https://github.com/bgoldhawk/le_plugin",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 12,
+  "version": 13,
   "iconUrl": "./logo.jpg",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -106,6 +106,9 @@
     ],
     "12": [
       "Remove cookiesToFind from authentication config"
+    ],
+    "13": [
+      "Use local logo.jpg as default thumbnail"
     ]
   }
 }
