@@ -133,6 +133,7 @@ source.getContentDetails = function (url) {
   }
 
   const sources = [];
+  let duration = 0;
 
   if (rumbleVideo?.embedUrl || (embedUrl && REGEX.RUMBLE_EMBED.test(embedUrl))) {
     const rumbleEmbedUrl = rumbleVideo?.embedUrl ?? embedUrl;
@@ -141,12 +142,13 @@ source.getContentDetails = function (url) {
 
     if (rumbleId) {
       try {
-        const hlsUrl = getRumbleHLS(rumbleId);
-        if (hlsUrl) {
+        const rumble = getRumbleHLS(rumbleId);
+        if (rumble) {
+          duration = rumble.duration;
           sources.push(new HLSSource({
             name: 'HLS',
-            url: hlsUrl,
-            duration: 0,
+            url: rumble.hlsUrl,
+            duration: rumble.duration,
             priority: true,
           }));
         }
@@ -184,7 +186,7 @@ source.getContentDetails = function (url) {
     video: new VideoSourceDescriptor(sources),
     viewCount: post.viewCount ?? 0,
     isLive: false,
-    duration: 0,
+    duration: duration,
   });
 };
 
@@ -365,7 +367,9 @@ function getRumbleHLS(videoId) {
   try {
     // ?request=video&ver=2 returns raw JSON
     const data = JSON.parse(resp.body);
-    return data?.u?.hls?.url ?? null;
+    const hlsUrl = data?.u?.hls?.url ?? null;
+    const duration = data?.u?.duration ?? 0;
+    return hlsUrl ? { hlsUrl, duration } : null;
   } catch (e) {
     log('Failed to parse Rumble embedJS: ' + e);
     return null;
