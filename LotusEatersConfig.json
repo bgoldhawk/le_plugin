@@ -7,7 +7,7 @@
   "sourceUrl": "https://raw.githubusercontent.com/bgoldhawk/le_plugin/main/LotusEatersConfig.json",
   "repositoryUrl": "https://github.com/bgoldhawk/le_plugin",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 16,
+  "version": 17,
   "iconUrl": "./logo.jpg",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -19,6 +19,7 @@
   "allowUrls": [
     "www.lotuseaters.com",
     "lotuseaters.com",
+    "cdn.lotuseaters.com",
     "rumble.com",
     "cdn.rumble.cloud",
     "hugh.cdn.rumble.cloud",
@@ -119,6 +120,9 @@
     ],
     "16": [
       "Populate video duration on content detail page from Rumble embedJS response"
+    ],
+    "17": [
+      "Add support for native VOD videos hosted on cdn.lotuseaters.com with multi-quality HLS streams"
     ]
   }
 }

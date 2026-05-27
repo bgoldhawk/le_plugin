@@ -117,11 +117,12 @@ source.getContentDetails = function (url) {
   const videos = post.videos ?? [];
   const rumbleVideo = videos.find(v => v.type === 'Rumble' && v.embedUrl);
   const odyseeVideo = videos.find(v => v.type === 'Odysee' && v.embedUrl);
+  const vodVideo = videos.find(v => v.type === 'VOD' && Array.isArray(v.vod) && v.vod.length > 0);
 
   // Fall back to specialBlock HTML embed if top-level videos are absent (older posts)
   let embedUrl = rumbleVideo?.embedUrl ?? odyseeVideo?.embedUrl ?? findEmbedInContent(post.content);
 
-  if (!embedUrl) {
+  if (!embedUrl && !vodVideo) {
     if (post.premiumContent && !post.hasPremiumAccess) {
       const user = resp.props?.user;
       if (!user) {
@@ -134,6 +135,23 @@ source.getContentDetails = function (url) {
 
   const sources = [];
   let duration = 0;
+
+  if (vodVideo) {
+    const qualityOrder = ['1080p', '720p', '480p', '360p'];
+    const sorted = vodVideo.vod.slice().sort((a, b) => {
+      const ai = qualityOrder.indexOf(a.label);
+      const bi = qualityOrder.indexOf(b.label);
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    });
+    for (const stream of sorted) {
+      sources.push(new HLSSource({
+        name: stream.label,
+        url: stream.url,
+        duration: 0,
+        priority: sources.length === 0,
+      }));
+    }
+  }
 
   if (rumbleVideo?.embedUrl || (embedUrl && REGEX.RUMBLE_EMBED.test(embedUrl))) {
     const rumbleEmbedUrl = rumbleVideo?.embedUrl ?? embedUrl;
