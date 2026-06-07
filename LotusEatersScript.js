@@ -117,7 +117,8 @@ source.getContentDetails = function (url) {
   const videos = post.videos ?? [];
   const rumbleVideo = videos.find(v => v.type === 'Rumble' && v.embedUrl);
   const odyseeVideo = videos.find(v => v.type === 'Odysee' && v.embedUrl);
-  const vodVideo = videos.find(v => v.type === 'VOD' && Array.isArray(v.vod) && v.vod.length > 0);
+  const vodVideo = videos.find(v => v.type === 'VOD' && Array.isArray(v.vod) && v.vod.length > 0)
+    ?? findVodInContent(post.content);
 
   // Fall back to specialBlock HTML embed if top-level videos are absent (older posts)
   let embedUrl = rumbleVideo?.embedUrl ?? odyseeVideo?.embedUrl ?? findEmbedInContent(post.content);
@@ -144,11 +145,11 @@ source.getContentDetails = function (url) {
       return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
     });
     for (const stream of sorted) {
-      sources.push(new HLSSource({
+      sources.push(new VideoUrlSource({
         name: stream.label,
         url: stream.url,
+        container: 'application/x-mpegURL',
         duration: 0,
-        priority: sources.length === 0,
       }));
     }
   }
@@ -392,6 +393,28 @@ function getRumbleHLS(videoId) {
     log('Failed to parse Rumble embedJS: ' + e);
     return null;
   }
+}
+
+function findVodInContent(content) {
+  if (!content?.content) return null;
+
+  function walk(nodes) {
+    for (const node of nodes) {
+      if (node.nodeType === 'embedded-entry-block') {
+        const target = node.data?.target;
+        if (target?.contentTypeId === 'video' && target?.type === 'VOD' && Array.isArray(target.vod) && target.vod.length > 0) {
+          return target;
+        }
+      }
+      if (node.content) {
+        const found = walk(node.content);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
+  return walk(content.content);
 }
 
 function findEmbedInContent(content) {
