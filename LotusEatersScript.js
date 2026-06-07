@@ -145,11 +145,11 @@ source.getContentDetails = function (url) {
       return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
     });
     for (const stream of sorted) {
-      sources.push(new VideoUrlSource({
+      sources.push(new HLSSource({
         name: stream.label,
         url: stream.url,
-        container: 'application/x-mpegURL',
         duration: 0,
+        priority: sources.length === 0,
       }));
     }
   }

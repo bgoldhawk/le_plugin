@@ -7,7 +7,7 @@
   "sourceUrl": "https://raw.githubusercontent.com/bgoldhawk/le_plugin/main/LotusEatersConfig.json",
   "repositoryUrl": "https://github.com/bgoldhawk/le_plugin",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 18,
+  "version": 19,
   "iconUrl": "./logo.jpg",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -127,6 +127,9 @@
     "18": [
       "Fix VOD videos embedded in rich text content not being found",
       "Show individual quality options (360p, 480p, 720p, 1080p) for VOD videos"
+    ],
+    "19": [
+      "Fix VOD playback by using HLSSource instead of VideoUrlSource"
     ]
   }
 }
