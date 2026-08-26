@@ -13,7 +13,7 @@ const INERTIA_HEADERS = {
   'Accept': 'text/html, application/xhtml+xml',
   'X-Requested-With': 'XMLHttpRequest',
   'X-Inertia': 'true',
-  'X-Inertia-Version': 'c292ca9b787d666ad4cc246cf4560579',
+  'X-Inertia-Version': '8f756400918e6051abd8963a79f53725',
 };
 
 const REGEX = {
