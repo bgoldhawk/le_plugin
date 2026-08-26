@@ -7,7 +7,7 @@
   "sourceUrl": "https://raw.githubusercontent.com/bgoldhawk/le_plugin/main/LotusEatersConfig.json",
   "repositoryUrl": "https://github.com/bgoldhawk/le_plugin",
   "scriptUrl": "./LotusEatersScript.js",
-  "version": 19,
+  "version": 20,
   "iconUrl": "./logo.jpg",
   "id": "1275ed04-1952-4a5e-a004-36ef21033c29",
   "scriptSignature": "",
@@ -130,6 +130,9 @@
     ],
     "19": [
       "Fix VOD playback by using HLSSource instead of VideoUrlSource"
+    ],
+    "20": [
+      "Fix all videos broken — update stale Inertia version hash after site redeploy"
     ]
   }
 }
